@@ -1,7 +1,7 @@
 
 export default async function handler(req, res) {
   try {
-    const tokenRes = await fetch("https://api.homey.app/oauth2/token", {
+    const tokenRes = await fetch("https://api.athom.com/oauth2/token", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams({
@@ -12,6 +12,11 @@ export default async function handler(req, res) {
     });
 
     const token = await tokenRes.json();
+
+    if (!tokenRes.ok) {
+      return res.status(tokenRes.status).json(token);
+    }
+
     return res.status(200).json(token);
   } catch (e) {
     return res.status(500).json({ error: e.message });
